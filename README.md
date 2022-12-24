@@ -1,4 +1,4 @@
-# Dyte <> Bhasa.io transcriptions
+# Dyte <> Symbl.ai transcriptions
 
 ## How to use?
 
@@ -17,15 +17,15 @@ import {
     deactivateTranscriptions,
     addTranscriptionsListerner,
     removeTranscriptionsListener
-} from '@dytesdk/bhasa-transcription';
+} from '@dytesdk/symbl-transcription';
 ```
 
-Now you can activate Bhasa transcriptions.
+Now you can activate Symbl transcriptions.
 
 ```
 activateTranscriptions({
     meeting: meeting, // From DyteClient.init
-    bhasaAccessToken: 'ACCESS_TOKEN_FROM_BHASA_IO',
+    symblAccessToken: 'ACCESS_TOKEN_FROM_SYMBL_AI',
 });
 ```
 
@@ -50,11 +50,29 @@ Once meeting is over, deactivate the transcription generation.
 ```
 deactivateTranscriptions({
     meeting: meeting, // From DyteClient.init
-    bhasaAccessToken: 'ACCESS_TOKEN_FROM_BHASA_AI',
+    symblAccessToken: 'ACCESS_TOKEN_FROM_SYMBL_AI',
 });
 ```
 In similar fashion, remove the transcriptions listener, once the meeting is over.
 
 ```
 removeTranscriptionsListener({meeting: meeting});
+```
+
+
+# How to get symblAccessToken?
+
+1. Go to <https://symbl.ai/> and register.
+2. Find your appId and appSecret on Symbl.ai post registeration in account settings.
+3. Run this CURL.
+
+```
+curl -k -X POST "https://api.symbl.ai/oauth2/token:generate" \
+     -H "accept: application/json" \
+     -H "Content-Type: application/json" \
+     -d $'{
+      "type" : "application",
+      "appId": "YOUR_APP_ID",
+      "appSecret": "YOUR_APP_SECRET"
+    }'
 ```
