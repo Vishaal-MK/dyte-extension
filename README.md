@@ -20,7 +20,7 @@ import {
 } from '@dytesdk/bhasa-transcription';
 ```
 
-Now you can activate Symbl transcriptions.
+Now you can activate Bhasa transcriptions.
 
 ```
 activateTranscriptions({
