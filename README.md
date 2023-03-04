@@ -1,15 +1,4 @@
-# Dyte <> Bhasa.io transcriptions
-
-## How to use?
-
-Find the Dyte integration logic in your codebase which may look like this
-
-```
-// Somewhere in your codebase
-const meeting = await DyteClient.init(...)
-```
-
-On top of the file where integration was found, import this package.
+On top of the file with Dyte integration import this package.
 
 ```
 import {
@@ -20,7 +9,7 @@ import {
 } from '@dytesdk/bhasa-transcription';
 ```
 
-Now you can activate Bhasa transcriptions.
+Now activate Bhasa transcriptions.
 
 ```
 activateTranscriptions({
@@ -31,7 +20,7 @@ activateTranscriptions({
 
 This would ensure that your audio gets translated and resultant transcriptions get sent to all participants including `self` being referred by `meeting.self`.
 
-If you want to show transcriptions to a participant or for `self`, you can do so using the following snippet.
+Show transcriptions to a participant or for `self`
 
 ```
 addTranscriptionsListerner({
@@ -41,9 +30,7 @@ addTranscriptionsListerner({
 })
 ```
 
-Using `transcriptionsCallback` you can populate the transcriptions in your app/website at any desired place.
-
-<b>NOTE</b>: For every partial or complete sentence, `transcriptionsCallback` will be called, with all formatted transcriptions.
+Using `transcriptionsCallback`, populate the transcriptions in your app/website at any desired place.
 
 Once meeting is over, deactivate the transcription generation.
 
