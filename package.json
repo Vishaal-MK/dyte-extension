@@ -1,7 +1,7 @@
 {
-  "name": "@dyte-in/symbl-transcription",
+  "name": "@dyte-in/bhasa-transcription",
   "version": "2.0.0",
-  "description": "Audio middleware to generate transcriptions using Symbl.ai APIs",
+  "description": "Audio middleware to generate transcriptions using bhasa.ai APIs",
   "types": "./types/index.d.ts",
   "main": "./dist/index.cjs.js",
   "browser": "./dist/index.umd.js",
@@ -15,7 +15,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/dyte-in/symbl-transcription.git"
+    "url": "git+https://github.com/dyte-in/bhasa-transcription.git"
   },
   "bugs": {
     "url": "https://community.dyte.io"

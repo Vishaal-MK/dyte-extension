@@ -3,10 +3,10 @@ import { ActivateTranscriptionsConfig, DeactivateTranscriptionsConfig } from "./
  *
  * @param ActivateTranscriptionsConfig Required params to initialise the middleware.
  * `meeting` is needed to send messages across peers and to listen to room messages.
- * `symblAccessToken` is needed to connect to symbl.ai.
+ * `bhasaAccessToken` is needed to connect to bhasa.ai.
  * @returns the raw result which `meeting.self.addAudioMiddleware` returns
  */
-declare function activateTranscriptions({ meeting, symblAccessToken, languageCode, }: ActivateTranscriptionsConfig): Promise<{
+declare function activateTranscriptions({ meeting, bhasaAccessToken, languageCode, }: ActivateTranscriptionsConfig): Promise<{
     success: boolean;
     message: string;
 }>;

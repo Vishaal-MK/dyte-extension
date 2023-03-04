@@ -4,7 +4,7 @@ let ws: WebSocket;
 
 let transcriptions: BroadcastMessagePayload[] = [];
 
-const symblIdToPeerIdMap: {[key: string]: string} = {};
+const bhasaIdToPeerIdMap: {[key: string]: string} = {};
 
 function getWebSocket() {
     return ws;
@@ -21,12 +21,12 @@ function setTranscriptions(newTranscriptions: BroadcastMessagePayload[]) {
     transcriptions = newTranscriptions;
 }
 
-function getPeerIdBySymblId(symblId: string) {
-    return symblIdToPeerIdMap[symblId];
+function getPeerIdBybhasaId(bhasaId: string) {
+    return bhasaIdToPeerIdMap[bhasaId];
 }
 
-function setPeerIdForSymblId(symblId: string, peerId: string) {
-    symblIdToPeerIdMap[symblId] = peerId;
+function setPeerIdForbhasaId(bhasaId: string, peerId: string) {
+    bhasaIdToPeerIdMap[bhasaId] = peerId;
 }
 
 export {
@@ -34,6 +34,6 @@ export {
     setWebSocket,
     getTranscriptions,
     setTranscriptions,
-    getPeerIdBySymblId,
-    setPeerIdForSymblId,
+    getPeerIdBybhasaId,
+    setPeerIdForbhasaId,
 };

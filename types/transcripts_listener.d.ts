@@ -1,6 +1,6 @@
 /**
- * Though this file indicates the integration of Symbl.ai.
- * We are not utilising Symbl.ai messaging in favor of Dyte websocket messaging.
+ * Though this file indicates the integration of bhasa.ai.
+ * We are not utilising bhasa.ai messaging in favor of Dyte websocket messaging.
  * This is being done to propagate User Name against their transcriptions.
  */
 import { AddTranscriptionsListenerConfig, RemoveTranscriptionsListenerConfig } from './param_types';

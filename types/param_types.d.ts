@@ -2,7 +2,7 @@ import DyteClient from '@dytesdk/web-core/types/client/DyteClient';
 import { BroadcastMessagePayload } from '@dytesdk/web-core/types/client/DyteParticipants';
 export interface ActivateTranscriptionsConfig {
     meeting: DyteClient;
-    symblAccessToken: string;
+    bhasaAccessToken: string;
     languageCode?: string;
 }
 export interface DeactivateTranscriptionsConfig {

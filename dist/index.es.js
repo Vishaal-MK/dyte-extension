@@ -1,6 +1,6 @@
 let ws;
 let transcriptions = [];
-const symblIdToPeerIdMap = {};
+const bhasaIdToPeerIdMap = {};
 function getWebSocket() {
   return ws;
 }
@@ -13,11 +13,11 @@ function getTranscriptions$1() {
 function setTranscriptions(newTranscriptions) {
   transcriptions = newTranscriptions;
 }
-function getPeerIdBySymblId(symblId) {
-  return symblIdToPeerIdMap[symblId];
+function getPeerIdBybhasaId(bhasaId) {
+  return bhasaIdToPeerIdMap[bhasaId];
 }
-function setPeerIdForSymblId(symblId, peerId) {
-  symblIdToPeerIdMap[symblId] = peerId;
+function setPeerIdForbhasaId(bhasaId, peerId) {
+  bhasaIdToPeerIdMap[bhasaId] = peerId;
 }
 let listernerParam;
 const broadcastedMessageCB = async ({ payload, type }) => {
@@ -45,9 +45,11 @@ async function removeTranscriptionsListener$1({
   try {
     meeting.participants.removeListener("broadcastedMessage", broadcastedMessageCB);
   } catch (ex) {
-    console.error("Failed to close Symbl websocket. Error: ", ex);
+    console.error("Failed to close Bhasa websocket. Error: ", ex);
   }
 }
+
+// Send audio stream to websocket
 async function audioTranscriptionMiddleware(audioContext) {
   const processor = audioContext.createScriptProcessor(1024, 1, 1);
   processor.onaudioprocess = (e) => {
@@ -71,12 +73,12 @@ async function audioTranscriptionMiddleware(audioContext) {
 }
 async function activateTranscriptions$1({
   meeting,
-  symblAccessToken,
+  bhasaAccessToken,
   languageCode
 }) {
   deactivateTranscriptions$1({ meeting });
   meeting.meta.roomName;
-  const bhasaEndpoint = `ws://216.48.191.199:8000/ws/listen`;
+  const bhasaEndpoint = `wss://transcribe-api.bhasa.io/ws`;
   const ws2 = new WebSocket(bhasaEndpoint);
   setWebSocket(ws2);
   ws2.onmessage = async (event) => {
@@ -86,7 +88,7 @@ async function activateTranscriptions$1({
     if (data.type === "message_response") {
       (_a = data.messages) == null ? void 0 : _a.forEach((message) => {
         var _a2, _b2, _c2;
-        if (getPeerIdBySymblId((_a2 = message.from) == null ? void 0 : _a2.id) === meeting.self.id) {
+        if (getPeerIdBybhasaId((_a2 = message.from) == null ? void 0 : _a2.id) === meeting.self.id) {
           meeting.participants.broadcastMessage("audioTranscriptionMessage", {
             text: message.payload.content,
             isPartialTranscript: false,
@@ -100,7 +102,7 @@ async function activateTranscriptions$1({
     }
     if (data.type === "message" && Object.prototype.hasOwnProperty.call(data.message, "punctuated")) {
       if (((_b = data.message.user) == null ? void 0 : _b.peerId) === meeting.self.id) {
-        setPeerIdForSymblId(data.message.user.id, meeting.self.id);
+        setPeerIdForbhasaId(data.message.user.id, meeting.self.id);
         meeting.participants.broadcastMessage("audioTranscriptionMessage", {
           text: data.message.punctuated.transcript,
           isPartialTranscript: true,
@@ -113,10 +115,10 @@ async function activateTranscriptions$1({
     }
   };
   ws2.onerror = (err) => {
-    console.error("Symbl websocket error: ", err);
+    console.error("bhasa websocket error: ", err);
   };
   ws2.onclose = () => {
-    console.info("Connection to Symbl websocket closed");
+    console.info("Connection to bhasa websocket closed");
   };
   ws2.onopen = () => {
     ws2.send(JSON.stringify({
@@ -141,7 +143,7 @@ async function deactivateTranscriptions$1({
     meeting.self.removeAudioMiddleware(audioTranscriptionMiddleware);
     (_a = getWebSocket()) == null ? void 0 : _a.close();
   } catch (ex) {
-    console.error("Failed to close Symbl websocket. Error: ", ex);
+    console.error("Failed to close bhasa websocket. Error: ", ex);
   }
 }
 async function activateTranscriptions(param) {
@@ -149,8 +151,8 @@ async function activateTranscriptions(param) {
   if (!((_a = param == null ? void 0 : param.meeting) == null ? void 0 : _a.self)) {
     throw new Error("arguments[0].meeting.self is not available. Did you miss calling new DyteClient first?");
   }
-  if (!(param == null ? void 0 : param.symblAccessToken)) {
-    throw new Error("Missing arguments[0].symblAccessToken. We need symbl access token to retrive conversations and to generate transcriptions");
+  if (!(param == null ? void 0 : param.bhasaAccessToken)) {
+    throw new Error("Missing arguments[0].bhasaAccessToken. We need bhasa access token to retrive conversations and to generate transcriptions");
   }
   return activateTranscriptions$1(param);
 }

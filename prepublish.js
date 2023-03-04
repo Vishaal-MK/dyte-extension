@@ -88,7 +88,7 @@ for (const file of walkSync(typesDir)) {
 }
 
 fs.writeFileSync('./package.json', JSON.stringify({
-    name: GHR === 'true' ? name : '@dytesdk/symbl-transcription',
+    name: GHR === 'true' ? name : '@dytesdk/bhasa-transcription',
     version,
     description,
     main,

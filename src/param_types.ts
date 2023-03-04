@@ -3,7 +3,7 @@ import { BroadcastMessagePayload } from '@dytesdk/web-core/types/client/DytePart
 
 export interface ActivateTranscriptionsConfig {
     meeting: DyteClient,
-    symblAccessToken: string,
+    bhasaAccessToken: string,
     languageCode?: string,
 }
 

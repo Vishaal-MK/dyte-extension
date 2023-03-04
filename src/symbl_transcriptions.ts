@@ -4,9 +4,9 @@ import {
   DeactivateTranscriptionsConfig,
 } from "./param_types";
 import {
-  getPeerIdBySymblId,
+  getPeerIdBybhasaId,
   getWebSocket,
-  setPeerIdForSymblId,
+  setPeerIdForbhasaId,
   setTranscriptions,
   setWebSocket,
 } from "./transcriptions_building_blocks";
@@ -15,12 +15,12 @@ import {
  *
  * @param ActivateTranscriptionsConfig Required params to initialise the middleware.
  * `meeting` is needed to send messages across peers and to listen to room messages.
- * `symblAccessToken` is needed to connect to symbl.ai.
+ * `bhasaAccessToken` is needed to connect to bhasa.ai.
  * @returns the raw result which `meeting.self.addAudioMiddleware` returns
  */
 async function activateTranscriptions({
   meeting,
-  symblAccessToken,
+  bhasaAccessToken,
   languageCode,
 }: ActivateTranscriptionsConfig) {
   // As a fail-safe, deactivateTranscriptions if activateTranscriptions function is called twice
@@ -41,7 +41,7 @@ async function activateTranscriptions({
       data.messages?.forEach((message: any) => {
         // console.log('Live transcript (more accurate): ', message.payload.content, data);
 
-        if (getPeerIdBySymblId(message.from?.id) === meeting.self.id) {
+        if (getPeerIdBybhasaId(message.from?.id) === meeting.self.id) {
           // More accurate Transcript
           meeting.participants.broadcastMessage(
             "audioTranscriptionMessage", // This can be named anything we want
@@ -66,9 +66,9 @@ async function activateTranscriptions({
       // console.log('Live transcript (less accurate): ',
       //     data.message.punctuated.transcript, data);
       if (data.message.user?.peerId === meeting.self.id) {
-        // Symbl sends their own user Id in from.id for accurate messages
+        // bhasa sends their own user Id in from.id for accurate messages
         // Need this mapping there to use it to show/send transcripts
-        setPeerIdForSymblId(data.message.user.id as string, meeting.self.id);
+        setPeerIdForbhasaId(data.message.user.id as string, meeting.self.id);
 
         meeting.participants.broadcastMessage(
           "audioTranscriptionMessage", // This can be named anything we want
@@ -90,13 +90,13 @@ async function activateTranscriptions({
   // Fired when the WebSocket closes unexpectedly due to an error or lost connetion
   ws.onerror = (err) => {
     // eslint-disable-next-line no-console
-    console.error("Symbl websocket error: ", err);
+    console.error("bhasa websocket error: ", err);
   };
 
   // Fired when the WebSocket connection has been closed
   ws.onclose = () => {
     // eslint-disable-next-line no-console
-    console.info("Connection to Symbl websocket closed");
+    console.info("Connection to bhasa websocket closed");
   };
 
   // Fired when the connection succeeds.
@@ -127,7 +127,7 @@ async function deactivateTranscriptions({
     getWebSocket()?.close();
   } catch (ex) {
     // eslint-disable-next-line no-console
-    console.error("Failed to close Symbl websocket. Error: ", ex);
+    console.error("Failed to close bhasa websocket. Error: ", ex);
   }
 }
 
